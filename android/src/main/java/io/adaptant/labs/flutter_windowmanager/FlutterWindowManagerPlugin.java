@@ -130,17 +130,13 @@ public class FlutterWindowManagerPlugin implements MethodCallHandler {
         break;
       case "detectDevices":
         System.out.println("ENTERED DETECT DEVICES");
-        DisplayManager manager = (DisplayManager) activity.getSystemService(Context.DISPLAY_SERVICE);
-        System.out.println(manager.getDisplays().length);
-        System.out.println("DISPLAY COUNT: " + manager.getDisplays().length);
-        result.success(manager.getDisplays().length);
+        DisplayManager displayManager = (DisplayManager) activity.getApplicationContext().getSystemService(Context.DISPLAY_SERVICE);
+        System.out.println(displayManager.getDisplays().length);
+        System.out.println("DISPLAY COUNT: " + displayManager.getDisplays().length);
+        result.success(displayManager.getDisplays().length);
       default:
         result.notImplemented();
     }
   }
-
-
-
-
 
 }
