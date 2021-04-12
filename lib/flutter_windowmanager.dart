@@ -37,8 +37,7 @@ class FlutterWindowManager {
   static const int FLAG_TRANSLUCENT_STATUS = 0x04000000;
   static const int FLAG_TURN_SCREEN_ON = 0x00200000;
 
-  static const MethodChannel _channel =
-      const MethodChannel('flutter_windowmanager');
+  static const MethodChannel _channel = const MethodChannel('flutter_windowmanager');
 
   static Future<bool> addFlags(int flags) async {
     return await _channel.invokeMethod("addFlags", {
@@ -48,6 +47,12 @@ class FlutterWindowManager {
 
   static Future<bool> clearFlags(int flags) async {
     return await _channel.invokeMethod("clearFlags", {
+      "flags": flags,
+    });
+  }
+
+  static Future<int> detectDevices({int flags = FLAG_SECURE}) async {
+    return await _channel.invokeMethod("detectDevices", {
       "flags": flags,
     });
   }

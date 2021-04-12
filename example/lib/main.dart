@@ -24,16 +24,14 @@ class _MyAppState extends State<MyApp> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text('Secure Mode: ${_secureMode.toString()}\n'),
-              RaisedButton(
+              TextButton(
                   onPressed: () async {
                     final secureModeToggle = !_secureMode;
 
                     if (secureModeToggle == true) {
-                      await FlutterWindowManager.addFlags(
-                          FlutterWindowManager.FLAG_SECURE);
+                      await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
                     } else {
-                      await FlutterWindowManager.clearFlags(
-                          FlutterWindowManager.FLAG_SECURE);
+                      await FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
                     }
 
                     setState(() {

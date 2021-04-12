@@ -1,6 +1,7 @@
 package io.adaptant.labs.flutter_windowmanager;
 
 import android.app.Activity;
+import android.media.MediaRouter;
 import android.os.Build;
 import android.view.WindowManager;
 
@@ -106,6 +107,8 @@ public class FlutterWindowManagerPlugin implements MethodCallHandler {
       return;
     }
 
+
+
     switch (call.method) {
       case "addFlags":
         activity.getWindow().addFlags(flags);
@@ -115,6 +118,14 @@ public class FlutterWindowManagerPlugin implements MethodCallHandler {
         activity.getWindow().clearFlags(flags);
         result.success(true);
         break;
+      case "detectDevices":
+        MediaRouter.RouteInfo routeInfo = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+          int deviceType = routeInfo.getDeviceType();
+          result.success(deviceType);
+        } else {
+          result.error("FlutterWindowManagerPlugin", "FlutterWindowManagerPlugin: error on detectDevices", null);
+        }
       default:
         result.notImplemented();
     }
