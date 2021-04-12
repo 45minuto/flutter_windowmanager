@@ -1,11 +1,16 @@
 package io.adaptant.labs.flutter_windowmanager;
 
 import android.app.Activity;
+import android.content.Context;
+import android.hardware.display.DisplayManager;
 import android.media.MediaRouter;
 import android.media.MediaRouter.RouteInfo;
 import android.os.Build;
 import android.view.WindowManager;
 
+import androidx.annotation.RequiresApi;
+
+import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
@@ -97,6 +102,7 @@ public class FlutterWindowManagerPlugin implements MethodCallHandler {
     return true;
   }
 
+  @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
   @Override
   public void onMethodCall(MethodCall call, Result result) {
     final int flags = call.argument("flags");
@@ -112,8 +118,6 @@ public class FlutterWindowManagerPlugin implements MethodCallHandler {
     }
 
 
-
-
     switch (call.method) {
       case "addFlags":
         System.out.println("ENTERED ADD FLAGS");
@@ -125,18 +129,18 @@ public class FlutterWindowManagerPlugin implements MethodCallHandler {
         result.success(true);
         break;
       case "detectDevices":
-        System.out.println("ENTERING DETECT DEVICES");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-          System.out.println("ENTERED DETECT DEVICES");
-          int devCount = mediaRouter.getRouteCount();
-          System.out.println("DETECTED DEVICES COUNT: " + devCount);
-          result.success(devCount);
-        } else {
-          System.out.println("ERROR DETECT DEVICES");
-          result.error("FlutterWindowManagerPlugin", "FlutterWindowManagerPlugin: error on detectDevices", null);
-        }
+        System.out.println("ENTERED DETECT DEVICES");
+        DisplayManager manager = (DisplayManager) activity.getSystemService(Context.DISPLAY_SERVICE);
+        System.out.println(manager.getDisplays().length);
+        System.out.println("DISPLAY COUNT: " + manager.getDisplays().length);
+        result.success(manager.getDisplays().length);
       default:
         result.notImplemented();
     }
   }
+
+
+
+
+
 }
