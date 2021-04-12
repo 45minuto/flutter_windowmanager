@@ -122,6 +122,7 @@ public class FlutterWindowManagerPlugin implements MethodCallHandler {
       return;
     }
 
+        initDisplayListener();
 
     switch (call.method) {
       case "addFlags":
