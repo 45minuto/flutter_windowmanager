@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 class FlutterWindowManager {
@@ -40,6 +41,7 @@ class FlutterWindowManager {
   static const MethodChannel _channel = const MethodChannel('flutter_windowmanager');
 
   static Future<bool> addFlags(int flags) async {
+    debugPrint("ENTERING ADD FLAGS - FLUTTER");
     return await _channel.invokeMethod("addFlags", {
       "flags": flags,
     });
