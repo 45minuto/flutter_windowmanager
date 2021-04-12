@@ -15,6 +15,7 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
 /** FlutterWindowManagerPlugin */
 public class FlutterWindowManagerPlugin implements MethodCallHandler {
   private final Activity activity;
+  private RouteInfo RouteInfo;
 
   private FlutterWindowManagerPlugin(Registrar registrar) {
     this.activity = registrar.activity();
@@ -100,6 +101,8 @@ public class FlutterWindowManagerPlugin implements MethodCallHandler {
   public void onMethodCall(MethodCall call, Result result) {
     final int flags = call.argument("flags");
 
+
+
     if (activity == null) {
       result.error("FlutterWindowManagerPlugin", "FlutterWindowManagerPlugin: ignored flag state change, current activity is null", null);
     }
@@ -107,6 +110,7 @@ public class FlutterWindowManagerPlugin implements MethodCallHandler {
     if (!validLayoutParams(result, flags)) {
       return;
     }
+
 
 
 
@@ -120,7 +124,7 @@ public class FlutterWindowManagerPlugin implements MethodCallHandler {
         result.success(true);
         break;
       case "detectDevices":
-        RouteInfo routeInfo = new RouteInfo.getInstance();
+        final RouteInfo routeInfo = RouteInfo;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
           int deviceType = routeInfo.getDeviceType();
           result.success(deviceType);
