@@ -18,7 +18,8 @@ public class FlutterWindowManagerPlugin implements MethodCallHandler {
   private final Activity activity;
   private RouteInfo RouteInfo;
 
-  private FlutterWindowManagerPlugin()
+  private FlutterWindowManagerPlugin(Registrar registrar) {
+    this.activity = registrar.activity();
   }
 
   /** Plugin registration. */
@@ -100,7 +101,6 @@ public class FlutterWindowManagerPlugin implements MethodCallHandler {
   @Override
   public void onMethodCall(MethodCall call, Result result) {
     final int flags = call.argument("flags");
-    final String TAG = "detectDevices";
 
 
 
@@ -117,6 +117,7 @@ public class FlutterWindowManagerPlugin implements MethodCallHandler {
 
     switch (call.method) {
       case "addFlags":
+        Log.d(null, "ENTERED ADD FLAGS");
         activity.getWindow().addFlags(flags);
         result.success(true);
         break;
@@ -125,14 +126,13 @@ public class FlutterWindowManagerPlugin implements MethodCallHandler {
         result.success(true);
         break;
       case "detectDevices":
-        Log.i(TAG, "ENTERING DETECT DEVEICES");
-        final RouteInfo routeInfo = RouteInfo;
+        Log.d(null, "ENTERING DETECT DEVICES");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-          Log.i(TAG, "ENTERED DETECT DEVEICES");
-          int deviceType = routeInfo.getDeviceType();
+          Log.d(null, "ENTERED DETECT DEVICES");
+          int deviceType = RouteInfo.getDeviceType();
           result.success(deviceType);
         } else {
-          Log.i(TAG, "ERROR DETECT DEVEICES");
+          Log.d(null, "ERROR DETECT DEVICES");
           result.error("FlutterWindowManagerPlugin", "FlutterWindowManagerPlugin: error on detectDevices", null);
         }
       default:
