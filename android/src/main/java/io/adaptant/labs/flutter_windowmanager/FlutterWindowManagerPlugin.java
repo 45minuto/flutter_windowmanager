@@ -122,7 +122,6 @@ public class FlutterWindowManagerPlugin implements MethodCallHandler {
       return;
     }
 
-        initDisplayListener();
 
     switch (call.method) {
       case "addFlags":
@@ -136,6 +135,7 @@ public class FlutterWindowManagerPlugin implements MethodCallHandler {
         break;
       case "detectDevices":
         System.out.println("ENTERED DETECT DEVICES");
+        initDisplayListener();
         DisplayManager displayManager = (DisplayManager) activity.getApplicationContext().getSystemService(Context.DISPLAY_SERVICE);
         System.out.println("DISPLAY PRESENTATION NAMES: " + displayManager.getDisplays(DisplayManager.DISPLAY_CATEGORY_PRESENTATION).toString());
         System.out.println("DISPLAY NAMES: " + displayManager.getDisplays().toString());
@@ -148,7 +148,11 @@ public class FlutterWindowManagerPlugin implements MethodCallHandler {
 
   private void initDisplayListener() {
 
+    System.out.println("INIT DISPLAY LISTENER");
+
+
     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+      System.out.println("INIT DISPLAY LISTENER ACCEPTED");
       mDisplayListener = new DisplayManager.DisplayListener() {
         @Override
         public void onDisplayAdded(int arg0) {
@@ -169,6 +173,8 @@ public class FlutterWindowManagerPlugin implements MethodCallHandler {
           System.out.println("DISPLAY REMOVED");
         }
       };
+    } else {
+      System.out.println("INIT DISPLAY LISTENER REFUSED");
     }
   }
 
