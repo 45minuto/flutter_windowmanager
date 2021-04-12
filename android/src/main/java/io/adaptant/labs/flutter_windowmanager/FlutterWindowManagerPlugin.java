@@ -2,6 +2,7 @@ package io.adaptant.labs.flutter_windowmanager;
 
 import android.app.Activity;
 import android.media.MediaRouter;
+import android.media.MediaRouter.RouteInfo;
 import android.os.Build;
 import android.view.WindowManager;
 
@@ -119,7 +120,7 @@ public class FlutterWindowManagerPlugin implements MethodCallHandler {
         result.success(true);
         break;
       case "detectDevices":
-        MediaRouter.RouteInfo routeInfo = null;
+        RouteInfo routeInfo = new RouteInfo.getInstance();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
           int deviceType = routeInfo.getDeviceType();
           result.success(deviceType);
