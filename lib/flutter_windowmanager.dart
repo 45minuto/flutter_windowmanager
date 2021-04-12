@@ -53,7 +53,7 @@ class FlutterWindowManager {
     });
   }
 
-  static Future<bool> detectDevices({int flags = FLAG_SECURE}) async {
+  static Future<int> detectDevices({int flags = FLAG_SECURE}) async {
     debugPrint("ENTERING DETECT DEVICES");
     return await _channel.invokeMethod("detectDevices", {
       "flags": flags,
