@@ -20,7 +20,12 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
 /** FlutterWindowManagerPlugin */
 public class FlutterWindowManagerPlugin implements MethodCallHandler {
   private final Activity activity;
-  private MediaRouter mediaRouter;
+  private Object mDisplayListener;
+  private MyDisplayListener mListener;
+
+  public interface MyDisplayListener {
+    public void onDisplayChanged();
+  }
 
   private FlutterWindowManagerPlugin(Registrar registrar) {
     this.activity = registrar.activity();
@@ -131,11 +136,38 @@ public class FlutterWindowManagerPlugin implements MethodCallHandler {
       case "detectDevices":
         System.out.println("ENTERED DETECT DEVICES");
         DisplayManager displayManager = (DisplayManager) activity.getApplicationContext().getSystemService(Context.DISPLAY_SERVICE);
+        System.out.println("DISPLAY PRESENTATION NAMES: " + displayManager.getDisplays(DisplayManager.DISPLAY_CATEGORY_PRESENTATION).toString());
         System.out.println("DISPLAY NAMES: " + displayManager.getDisplays().toString());
         System.out.println("DISPLAY COUNT: " + displayManager.getDisplays().length);
         result.success(displayManager.getDisplays().length);
       default:
         result.notImplemented();
+    }
+  }
+
+  private void initDisplayListener() {
+
+    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+      mDisplayListener = new DisplayManager.DisplayListener() {
+        @Override
+        public void onDisplayAdded(int arg0) {
+          System.out.println("DISPLAY ADDED");
+        }
+
+        @Override
+        public void onDisplayChanged(int arg0) {
+          System.out.println("ON DISPLAY CHANGED");
+          if (mListener != null) {
+            System.out.println("DISPLAY CHANGED");
+            mListener.onDisplayChanged();
+          }
+        }
+
+        @Override
+        public void onDisplayRemoved(int arg0) {
+          System.out.println("DISPLAY REMOVED");
+        }
+      };
     }
   }
 
